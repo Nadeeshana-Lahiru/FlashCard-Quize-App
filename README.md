@@ -139,6 +139,7 @@ Contributions are welcome! For major changes, please open an issue first to disc
 ## 📄 License
 
 Distributed under the MIT License. See LICENSE for more information.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## 📧 Contact
 
