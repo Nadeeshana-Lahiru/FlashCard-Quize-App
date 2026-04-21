@@ -46,19 +46,19 @@ The **Flashcard Quiz App** is a mobile study companion that transforms tradition
 
 | Splash Screen | Subjects Dashboard | Subject Options |
 |------------|--------------------|-----------------|
-| <img width="367" height="800" alt="image" src="https://github.com/user-attachments/assets/5aa64b82-d88f-4c19-b688-4a95b8c4f9da" /> | <img width="360" height="795" alt="image" src="https://github.com/user-attachments/assets/0bd30eaf-8d5e-4d0f-92bd-d449d74931e1" /> | <img width="362" height="793" alt="image" src="https://github.com/user-attachments/assets/cb77edd3-665c-4d29-8b3f-d8ea11b38d2f" /> |
+| <img width="359" height="795" alt="Splash Screen" src="https://github.com/user-attachments/assets/c8302120-df8d-4b47-a5bc-8c9771cee0bf" /> | <img width="357" height="792" alt="Subjects Dashboard" src="https://github.com/user-attachments/assets/a689dde9-fda4-4e75-af2a-e47f2dd68d75" /> | <img width="353" height="792" alt="Subject Options" src="https://github.com/user-attachments/assets/7b7fccb2-26d7-4e69-a033-fe6e1b0bd4c1" /> |
 
 | Study Mode Selection | Classic Swiping | Typing Quiz |
 |----------------------|-----------------|-------------|
-| <img width="357" height="791" alt="image" src="https://github.com/user-attachments/assets/d481b38a-a02f-4582-b5fa-40e95d91ccaa" /> | <img width="358" height="791" alt="image" src="https://github.com/user-attachments/assets/3d6632a7-d918-44bc-bf11-8466602e3ff5" /> | <img width="357" height="789" alt="image" src="https://github.com/user-attachments/assets/1af8317e-a38e-43e2-a0c0-fb61b80041b7" /> |
+| <img width="356" height="791" alt="study mode" src="https://github.com/user-attachments/assets/0a0efebd-04d4-4906-8d5d-ab205623a5c0" /> | <img width="352" height="790" alt="swipe" src="https://github.com/user-attachments/assets/342974f3-a308-447b-b49b-f1e4161c04b3" /> | <img width="357" height="787" alt="typing" src="https://github.com/user-attachments/assets/8f4a643c-ac94-4564-a37f-b32244b0579c" /> |
 
 | Manage Cards | History View | Profile Screen |
 |--------------|--------------|----------------|
-| <img width="357" height="790" alt="image" src="https://github.com/user-attachments/assets/edc30343-e528-4f11-ab81-85127b46e62d" /> | <img width="357" height="791" alt="image" src="https://github.com/user-attachments/assets/d4945bd6-1dec-4ebd-af80-2ac07681d47a" /> | <img width="358" height="791" alt="image" src="https://github.com/user-attachments/assets/1ac35a76-e9f5-4df5-883d-d89f11511b8a" /> |
+| <img width="357" height="791" alt="manage card" src="https://github.com/user-attachments/assets/b2609235-8af1-43e4-aa26-866412066a46" /> | <img width="356" height="792" alt="history" src="https://github.com/user-attachments/assets/8525bdc6-2254-4a65-8949-d7a218024676" /> | <img width="352" height="791" alt="profile" src="https://github.com/user-attachments/assets/6c5542f1-3fd9-4e79-95d6-da20cf21ab7d" /> |
 
 | Settings | Add Subject Dialog | Card Management Actions |
 |----------|--------------------|-------------------------|
-| <img width="358" height="789" alt="image" src="https://github.com/user-attachments/assets/3435a6d5-aa34-4955-b72e-5f1ad973730a" /> | <img width="357" height="792" alt="image" src="https://github.com/user-attachments/assets/5015b004-d30d-4320-9bdc-a34e6379230e" /> | <img width="355" height="790" alt="image" src="https://github.com/user-attachments/assets/6f7cf430-171d-4fa9-b481-def0e234b4d2" /> |
+| <img width="352" height="788" alt="settings" src="https://github.com/user-attachments/assets/067b6f2e-f9a1-452c-9e40-64a89e8af36e" /> | <img width="357" height="790" alt="add subject" src="https://github.com/user-attachments/assets/59d67451-afa8-4b87-9d0c-8080aa8fc02d" /> | <img width="357" height="788" alt="create card" src="https://github.com/user-attachments/assets/a964a8a8-1092-48a1-8817-6c141e5790a2" /> |
 
 ## 🛠️ Tech Stack
 
@@ -90,6 +90,14 @@ The **Flashcard Quiz App** is a mobile study companion that transforms tradition
 
    `flutter run`
 
+## 🧪 Testing the Features
+
+- Create a subject → Tap "+ New Subject" → Enter name → Create
+- Add a card → Tap a subject → "Manage Cards" → "+ New Card"
+- Study → Tap a subject → Choose study mode → Start quizzing!
+- Change theme → Settings → Choose Light/Dark/System
+- View history → Bottom navigation → History tab
+
 ## 📂 Project Structure
 
 lib/
@@ -99,14 +107,6 @@ lib/
 ├── providers/       # State management (subjects, cards, theme, profile)
 ├── services/        # Storage, CSV import/export
 └── utils/           # Helpers, constants, themes
-
-## 🧪 Testing the Features
-
-- Create a subject → Tap "+ New Subject" → Enter name → Create
-- Add a card → Tap a subject → "Manage Cards" → "+ New Card"
-- Study → Tap a subject → Choose study mode → Start quizzing!
-- Change theme → Settings → Choose Light/Dark/System
-- View history → Bottom navigation → History tab
 
 ## 📸 Screenshots Folder
 
