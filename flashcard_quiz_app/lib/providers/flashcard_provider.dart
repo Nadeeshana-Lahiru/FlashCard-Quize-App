@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 import '../models/flashcard.dart';
 import '../models/category.dart';
 
@@ -26,10 +26,10 @@ class FlashcardProvider with ChangeNotifier {
   }
 
   Future<void> _loadData() async {
-    final prefs = await SharedPreferences.getInstance();
+    final box = Hive.box('flashcardsBox');
     
     // Load Categories
-    final categoriesString = prefs.getString('flashcard_categories_v2');
+    final categoriesString = box.get('flashcard_categories_v2');
     if (categoriesString != null) {
       final List<dynamic> decodedList = jsonDecode(categoriesString);
       _categories = decodedList.map((item) => FlashcardCategory.fromJson(item)).toList();
@@ -43,7 +43,7 @@ class FlashcardProvider with ChangeNotifier {
     }
 
     // Load Flashcards
-    final cardsString = prefs.getString('flashcards_v2');
+    final cardsString = box.get('flashcards_v2');
     if (cardsString != null) {
       final List<dynamic> decodedList = jsonDecode(cardsString);
       _flashcards = decodedList.map((item) => Flashcard.fromJson(item)).toList();
@@ -73,15 +73,15 @@ class FlashcardProvider with ChangeNotifier {
   }
 
   Future<void> _saveCategories() async {
-    final prefs = await SharedPreferences.getInstance();
+    final box = Hive.box('flashcardsBox');
     final encodedList = jsonEncode(_categories.map((c) => c.toJson()).toList());
-    await prefs.setString('flashcard_categories_v2', encodedList);
+    await box.put('flashcard_categories_v2', encodedList);
   }
 
   Future<void> _saveFlashcards() async {
-    final prefs = await SharedPreferences.getInstance();
+    final box = Hive.box('flashcardsBox');
     final encodedList = jsonEncode(_flashcards.map((f) => f.toJson()).toList());
-    await prefs.setString('flashcards_v2', encodedList);
+    await box.put('flashcards_v2', encodedList);
   }
 
   void addCategory(String name, int color) {

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive/hive.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class SettingsProvider with ChangeNotifier {
@@ -27,22 +27,22 @@ class SettingsProvider with ChangeNotifier {
   }
 
   Future<void> _initSettings() async {
-    final prefs = await SharedPreferences.getInstance();
+    final box = Hive.box('settingsBox');
     
     // Load Theme
-    final themeIndex = prefs.getInt('themeMode');
+    final themeIndex = box.get('themeMode');
     if (themeIndex != null && themeIndex < ThemeMode.values.length) {
       _themeMode = ThemeMode.values[themeIndex];
     }
 
-    _userName = prefs.getString('userName') ?? "Flutter Student";
-    _userBio = prefs.getString('userBio') ?? "Eager to learn new topics!";
-    _userAvatar = prefs.getString('userAvatar') ?? "";
+    _userName = box.get('userName') ?? "Flutter Student";
+    _userBio = box.get('userBio') ?? "Eager to learn new topics!";
+    _userAvatar = box.get('userAvatar') ?? "";
 
     // Analytics: Streaks Logic
     String todayString = DateTime.now().toIso8601String().split('T')[0];
-    String? lastOpened = prefs.getString('lastOpenedDate');
-    _currentStreak = prefs.getInt('currentStreak') ?? 0;
+    String? lastOpened = box.get('lastOpenedDate');
+    _currentStreak = box.get('currentStreak') ?? 0;
     
     if (lastOpened != null) {
       final lastDate = DateTime.parse(lastOpened);
@@ -57,11 +57,11 @@ class SettingsProvider with ChangeNotifier {
       _currentStreak = 1;
     }
     
-    await prefs.setString('lastOpenedDate', todayString);
-    await prefs.setInt('currentStreak', _currentStreak);
+    await box.put('lastOpenedDate', todayString);
+    await box.put('currentStreak', _currentStreak);
 
     // Analytics: Heatmap Logic
-    final heatmapString = prefs.getString('reviewHeatmap');
+    final heatmapString = box.get('reviewHeatmap');
     if (heatmapString != null) {
       _reviewHeatmap = Map<String, int>.from(jsonDecode(heatmapString));
     }
@@ -81,32 +81,32 @@ class SettingsProvider with ChangeNotifier {
 
   Future<void> setThemeMode(ThemeMode mode) async {
     _themeMode = mode;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('themeMode', mode.index);
+    final box = Hive.box('settingsBox');
+    await box.put('themeMode', mode.index);
     notifyListeners();
   }
 
   Future<void> updateProfile(String name, String bio) async {
     _userName = name;
     _userBio = bio;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userName', name);
-    await prefs.setString('userBio', bio);
+    final box = Hive.box('settingsBox');
+    await box.put('userName', name);
+    await box.put('userBio', bio);
     notifyListeners();
   }
 
   Future<void> updateUserAvatar(String avatarUrl) async {
     _userAvatar = avatarUrl;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('userAvatar', avatarUrl);
+    final box = Hive.box('settingsBox');
+    await box.put('userAvatar', avatarUrl);
     notifyListeners();
   }
 
   Future<void> logCardReview() async {
     String todayString = DateTime.now().toIso8601String().split('T')[0];
     _reviewHeatmap[todayString] = (_reviewHeatmap[todayString] ?? 0) + 1;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('reviewHeatmap', jsonEncode(_reviewHeatmap));
+    final box = Hive.box('settingsBox');
+    await box.put('reviewHeatmap', jsonEncode(_reviewHeatmap));
     notifyListeners();
   }
 }
