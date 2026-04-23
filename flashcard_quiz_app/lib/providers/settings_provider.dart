@@ -8,6 +8,7 @@ class SettingsProvider with ChangeNotifier {
   String _appVersion = "1.0.0";
   String _userName = "Flutter Student";
   String _userBio = "Eager to learn new topics!";
+  String _userAvatar = "";
   bool _isLoading = true;
   int _currentStreak = 0;
   Map<String, int> _reviewHeatmap = {};
@@ -16,6 +17,7 @@ class SettingsProvider with ChangeNotifier {
   String get appVersion => _appVersion;
   String get userName => _userName;
   String get userBio => _userBio;
+  String get userAvatar => _userAvatar;
   bool get isLoading => _isLoading;
   int get currentStreak => _currentStreak;
   Map<String, int> get reviewHeatmap => _reviewHeatmap;
@@ -35,6 +37,7 @@ class SettingsProvider with ChangeNotifier {
 
     _userName = prefs.getString('userName') ?? "Flutter Student";
     _userBio = prefs.getString('userBio') ?? "Eager to learn new topics!";
+    _userAvatar = prefs.getString('userAvatar') ?? "";
 
     // Analytics: Streaks Logic
     String todayString = DateTime.now().toIso8601String().split('T')[0];
@@ -89,6 +92,13 @@ class SettingsProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('userName', name);
     await prefs.setString('userBio', bio);
+    notifyListeners();
+  }
+
+  Future<void> updateUserAvatar(String avatarUrl) async {
+    _userAvatar = avatarUrl;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userAvatar', avatarUrl);
     notifyListeners();
   }
 

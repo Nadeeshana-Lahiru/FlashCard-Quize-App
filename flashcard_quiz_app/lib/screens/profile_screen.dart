@@ -37,6 +37,87 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  void _showAvatarSelectionDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Select an Avatar'),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: GridView.builder(
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 5,
+                crossAxisSpacing: 8,
+                mainAxisSpacing: 8,
+              ),
+              itemCount: 25,
+              itemBuilder: (context, index) {
+                final avatarUrl = 'https://api.dicebear.com/9.x/avataaars/png?seed=Avatar${index + 1}';
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    _showConfirmationDialog(avatarUrl);
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    backgroundImage: NetworkImage(avatarUrl),
+                  ),
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showConfirmationDialog(String avatarUrl) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Save Avatar?'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CircleAvatar(
+                radius: 50,
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                backgroundImage: NetworkImage(avatarUrl),
+              ),
+              const SizedBox(height: 16),
+              const Text('Do you want to use this avatar?'),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Provider.of<SettingsProvider>(context, listen: false).updateUserAvatar(avatarUrl);
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Avatar updated successfully!')),
+                );
+              },
+              child: const Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,10 +133,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 16),
-              CircleAvatar(
-                radius: 60,
-                backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(50),
-                child: Icon(Icons.person, size: 60, color: Theme.of(context).colorScheme.primary),
+              Consumer<SettingsProvider>(
+                builder: (context, settings, child) {
+                  return GestureDetector(
+                    onTap: _showAvatarSelectionDialog,
+                    child: Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 60,
+                          backgroundColor: Theme.of(context).colorScheme.primary.withAlpha(50),
+                          backgroundImage: settings.userAvatar.isNotEmpty 
+                              ? NetworkImage(settings.userAvatar) 
+                              : null,
+                          child: settings.userAvatar.isEmpty
+                              ? Icon(Icons.person, size: 60, color: Theme.of(context).colorScheme.primary)
+                              : null,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Theme.of(context).scaffoldBackgroundColor, width: 2),
+                            ),
+                            child: Icon(
+                              Icons.edit,
+                              size: 20,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
               const SizedBox(height: 32),
               TextField(
